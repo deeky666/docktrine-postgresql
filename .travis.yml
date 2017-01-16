@@ -122,11 +122,11 @@ before_install:
 before_script:
   - docker build --force-rm=true --build-arg POSTGRESQL_VERSION=${POSTGRESQL_VERSION} -t deeky666/postgresql:${POSTGRESQL_VERSION} .
 
-  - docker run -d -p 5432:5432 deeky666/postgresql:${POSTGRESQL_VERSION}
+  - docker run -d -p 5433:5432 deeky666/postgresql:${POSTGRESQL_VERSION}
   - sleep 5
-  - psql -h 127.0.0.1 -U postgres -c "SELECT version()"
-  - psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE foo"
-  - psql -h 127.0.0.1 -U postgres -l | grep foo > /dev/null
+  - psql -h 127.0.0.1 -p 5433 -U postgres -c "SELECT version()"
+  - psql -h 127.0.0.1 -p 5433 -U postgres -c "CREATE DATABASE foo"
+  - psql -h 127.0.0.1 -p 5433 -U postgres -l | grep foo > /dev/null
 
   - if [[ ! -z "$TRAVIS_TAG" && ! -z "$LATEST_MINOR" ]]; then docker tag deeky666/postgresql:${POSTGRESQL_VERSION} deeky666/postgresql:${LATEST_MINOR}; fi
   - if [[ ! -z "$TRAVIS_TAG" && ! -z "$LATEST" ]]; then docker tag deeky666/postgresql:${POSTGRESQL_VERSION} deeky666/postgresql:latest; fi
