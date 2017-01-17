@@ -7,7 +7,7 @@ ARG POSTGRESQL_VERSION
 # Download and install PostgreSQL server $POSTGRESQL_VERSION as lightweight package.
 RUN \
     apt-get update -y && \
-    apt-get install -y wget g++ make libreadline-dev zlib1g-dev --no-install-recommends && \
+    apt-get install -y wget gcc-4.7 make libreadline-dev zlib1g-dev --no-install-recommends && \
 
     groupadd postgres && \
     useradd -r -g postgres -p postgres postgres && \
@@ -26,11 +26,13 @@ RUN \
 
     cd postgresql* && \
 
-    ./configure && \
+    ./configure \
+        CC='gcc-4.7 -m64' \
+        && \
     make -j`nproc` && \
     make install && \
 
-    apt-get purge --auto-remove -y wget g++ make libreadline-dev zlib1g-dev && \
+    apt-get purge --auto-remove -y wget gcc-4.7 make libreadline-dev zlib1g-dev && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/local/pgsql/include
 
