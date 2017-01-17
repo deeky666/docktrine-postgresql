@@ -123,7 +123,7 @@ before_script:
   - docker build --force-rm=true --build-arg POSTGRESQL_VERSION=${POSTGRESQL_VERSION} -t deeky666/postgresql:${POSTGRESQL_VERSION} .
 
   - docker run -d -p 5433:5432 deeky666/postgresql:${POSTGRESQL_VERSION}
-  - sleep 1
+  - sleep 5
   - psql -h 127.0.0.1 -p 5433 -U postgres -c "SELECT version()"
   - psql -h 127.0.0.1 -p 5433 -U postgres -c "CREATE DATABASE foo"
   - psql -h 127.0.0.1 -p 5433 -U postgres -l | grep foo > /dev/null
