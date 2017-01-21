@@ -46,3 +46,7 @@ USER postgres
 
 # Expose PostgreSQL server port 5432.
 EXPOSE 5432
+
+COPY healthcheck /usr/local/bin/
+
+HEALTHCHECK --interval=1s --retries=30 CMD ["healthcheck"]
